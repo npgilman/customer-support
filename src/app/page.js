@@ -9,7 +9,7 @@ export default function Home() {
 
   const onSend = (e) => {
     e.preventDefault();
-    if (!newMessage.msg || newMessage.msg.length === 0) return;
+    if (newMessage.length === 0) return;
 
     setMessages([
       ...messages,
@@ -19,21 +19,14 @@ export default function Home() {
     setIndex(msg_index + 1);
   };
 
-  useEffect(() => {
-    setMessages([
-      { msg: "test", index: "1", usr: true },
-      { msg: "hi", index: "2", usr: false },
-      { msg: "ugh bye", index: "3", usr: true },
-    ]);
-  }, []);
-
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       AI Customer Support
       <div className="flex flex-col flex-1 z-10 max-w-5xl w-full justify-between font-mono text-sm bg-slate-500">
         <div>
           {messages.map((message) => (
-            <div key={message.index}
+            <div
+              key={message.index}
               className={`${
                 message.index % 2 == 0 ? "bg-slate-400" : "bg-slate-500"
               } ${message.usr ? "text-left pl-3" : "text-right pr-3"}`}
