@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import aiResponse from "./chat";
 
 export default function Home() {
   const [newMessage, setNewMessage] = useState("");
@@ -7,16 +8,20 @@ export default function Home() {
 
   const [messages, setMessages] = useState([]);
 
-  const onSend = (e) => {
+  const onSend = async (e) => {
     e.preventDefault();
     if (newMessage.length === 0) return;
+
+    const response = await aiResponse(newMessage);
+    setNewMessage("");
 
     setMessages([
       ...messages,
       { msg: newMessage, index: msg_index, usr: true },
+      { msg: response, index: msg_index + 1, usr: false },
     ]);
-    setNewMessage("");
-    setIndex(msg_index + 1);
+    setIndex(msg_index + 2);
+
   };
 
   return (
