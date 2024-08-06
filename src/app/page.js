@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import aiResponse from "./chat";
 
 export default function Home() {
   const [newMessage, setNewMessage] = useState("");
@@ -11,8 +10,9 @@ export default function Home() {
   const onSend = async (e) => {
     e.preventDefault();
     if (newMessage.length === 0) return;
+  
 
-    const response = await aiResponse(newMessage);
+    const response = await sendMessageToServer(newMessage);
     setNewMessage("");
 
     setMessages([
@@ -23,6 +23,20 @@ export default function Home() {
     setIndex(msg_index + 2);
 
   };
+
+  const sendMessageToServer = async (message) => {
+    const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ message: message })
+    });
+    const data = await response.json();
+
+    return data.reply.choices[0].message.content;
+}
+
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
